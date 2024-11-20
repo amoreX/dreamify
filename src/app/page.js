@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
 import { useState, useEffect } from "react";
-// import {motion} from "framer-motion"
+import {motion} from "framer-motion"
 export default function Home() {
   
   
@@ -26,7 +26,7 @@ export default function Home() {
   );
   useEffect(() => {
     const generateSparkles = () => {
-      const sparkleCount = Math.floor(Math.random() * 6) + 20; // Random between 20 and 50
+      const sparkleCount = Math.floor(Math.random() * 25) + 20; // Random between 20 and 50
       const newSparkles = Array.from({ length: sparkleCount }, () => ({
         left: `${Math.random() * 100}vw`,
         top: `${Math.random() * 100}vh`,
@@ -39,11 +39,8 @@ export default function Home() {
   }, []);
 
   return (
+    <>
     <div
-      id="landing-container"
-      className="w-screen h-screen bg-gradient-to-b from-indigo-950 from-50%   to-violet-950/30 to-100% flex justify-center items-center flex-col gap-2"
-    >
-      {/* <div
         id="sparkles"
         style={{ position: "absolute", pointerEvents: "none" }}
       >
@@ -60,7 +57,7 @@ export default function Home() {
             animate={{ opacity: 0.7,scale:Math.random()*2 }}
             transition={{
               duration: 1.5,
-              delay:0.5*index,
+              delay:0.1*index,
               repeat: Infinity,
               repeatType: "reverse",
             }}
@@ -68,7 +65,12 @@ export default function Home() {
             {sparkle}
           </motion.div>
         ))}
-      </div> */}
+      </div>
+    <div
+      id="landing-container"
+      className="w-screen h-screen bg-gradient-to-b from-indigo-950 from-50%   to-violet-950/30 to-100% flex justify-center items-center flex-col gap-2 overflow-hidden"
+    >
+      
 
       <div
         id="title"
@@ -83,5 +85,7 @@ export default function Home() {
         signin
       </div>
     </div>
+    
+    </>
   );
 }

@@ -6,12 +6,29 @@ import { useState, useEffect } from "react";
 export default function Homepage() {
   const { data: session } = useSession();
 
-  useEffect(() => {
-    const getData = async () => {
-      const diddy = await axios.get("/api/connect");
+  const [userpost,setUserpost]=useState("");
+  
+    const postData = async () => {
+        console.log("post was clicked");
+      const diddy = await axios.post("/api/MakePost",{
+        username:"rahmnnihalfdsfds",
+        email:"idfk",    //fix the params thats being sent
+        post:"first fucking post",
+      });
     };
-    getData();
-  }, []);
+    
+    useEffect(()=>{
+        const register= async()=>{
+            console.log(session?.user?.username,session?.user?.email);
+            await axios.post("/api/createUser",{
+                username:"rahmnnihalfdsfds",    //fix the params thats being sent
+                email:"idfk"
+            });
+        } 
+        register();
+    },[]);
+
+  
 
   const [sparkles, setSparkles] = useState([]);
   const stars = Array.from({ length: 10 });
@@ -102,8 +119,9 @@ export default function Homepage() {
               type="text"
               placeholder="Enter Dream"
               className="bg-transparent w-full h-9 border-none outline-none rounded-full box-border p-2"
+              onChange={(e)=>setUserpost(e.target.value)}
             />
-            <div id="post-button" className="cursor-pointer">
+            <div id="post-button" className="cursor-pointer" onClick={()=>postData()}>
               post
             </div>
           </div>

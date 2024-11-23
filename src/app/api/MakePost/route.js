@@ -1,15 +1,15 @@
 import userModel from '../Models/userModel'
-const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
 import { connecting } from '../connect/route'
 
 export const POST = async (req, res) => {
-    const { friendId, userId } = await req.json();
+    const { username, email, post } = await req.json();
     await connecting();
     try {
+        
         const data = await userModel.updateOne(
-            { _id: userId },
-            { $push: { friends: friendId } }
+            { email: email },
+            { $push: { posts: {post} } }
         );
 
         if (data.modifiedCount === 0) {
@@ -19,7 +19,7 @@ export const POST = async (req, res) => {
         }
 
         return Response.json({
-            Message:"friend added!"
+            Message:"Dream Added!"
         });
     } catch (err) {
         console.log(err);

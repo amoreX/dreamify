@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 export default function DreamsThread() {
   const { data: session } = useSession();
   const [dreams, setDreams] = useState(null);
+  const [geminiPrompt,setGeminiPrompt]=useState(null);
   useEffect(() => {
     const gettingDreams = async () => {
       const data = await axios.get("/api/getAll");
@@ -16,6 +17,11 @@ export default function DreamsThread() {
     };
     gettingDreams();
   }, []);
+  useEffect(()=>{
+    if(geminiPrompt!=null){
+        console.log("Tabahi hogi ab");
+    }
+  },[geminiPrompt]);
   return (
     <div id="dreams-container" className="w-screen h-full flex justify-center ">
       {dreams == null ? (

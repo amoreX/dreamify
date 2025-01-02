@@ -32,8 +32,9 @@ export default function DreamsThread() {
         <div className="flex flex-col items-center w-screen gap-3  ">
           {dreams.map((dream, ind) => {
             return (
-              <div id="each-dream-container" key={ind} className="w-1/2 h-fit bg-black">
-                {dream.username}
+              <div id="each-dream-container" key={ind} className="w-1/2 h-fit relative bg-indigo-600 box-border p-3 rounded-md flex justify-center items-center">
+                <span> {dream.post}</span>
+                <div id="username" className="absolute bottom-0 bg-black">{dream.username}</div>
               </div>
             );
           })}

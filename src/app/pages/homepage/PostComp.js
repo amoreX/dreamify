@@ -20,7 +20,7 @@ export default function PostComp() {
   return (
     <div
       id="footer-container"
-      className="w-screen h-16  flex justify-center items-center gap-2"
+      className="w-screen h-16  flex justify-center items-center gap-2 z-20"
     >
       <div
         id="user-dream-container"

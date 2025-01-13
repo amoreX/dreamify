@@ -20,10 +20,10 @@ export default function DreamsThread() {
     gettingDreams();
   }, []);
   useEffect(()=>{
-    if(geminiPrompt!=null){
-        console.log("Tabahi hogi ab");
+    if(geminiPrompt != null) {
+        console.log("its gonna get bricked now");
     }
-  },[geminiPrompt]);
+  }, [geminiPrompt]);
   return (
     <div id="dreams-container" className="w-screen h-screen flex justify-center overflow-y-scroll no-scrollbar">
       {dreams == null ? (

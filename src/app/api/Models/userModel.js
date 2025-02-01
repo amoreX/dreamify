@@ -13,4 +13,3 @@ const userSchema = new Schema(
 );
 
 module.exports = mongoose.models.Users || mongoose.model("Users", userSchema);
-// module.exports = mongoose.models.Posts || mongoose.model("Posts", postModel);

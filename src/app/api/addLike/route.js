@@ -9,26 +9,33 @@ export const POST = async (req, res) => {
 
   try {
     const post = await postModel.findById(postId);
-    // console.log(post.likes);
-    const postLikeUpdate= await postModel.updateOne(
-        {_id:postId},
-        {$inc :{likes: 1 }}
-    );
 
-    const postArrayUpdate=await postModel.updateOne(
-        {_id:postId},
-        {$push:{likedby:email}}
-    );
+    let isPresent = post.likedby.includes(email);
 
-    if (postLikeUpdate.modifiedCount === 0 || postArrayUpdate.modifiedCount===0) {
-        return Response.json({
-          Message: "Error hogaya",
-          Status:false,
-        });
-      }
+    if (!isPresent) {
+      const postLikeUpdate = await postModel.updateOne(
+        { _id: postId },
+        { $inc: { likes: 1 } }
+      );
+
+      const postArrayUpdate = await postModel.updateOne(
+        { _id: postId },
+        { $push: { likedby: email } }
+      );
+    } else {
+      const postLikeUpdate = await postModel.updateOne(
+        { _id: postId },
+        { $inc: { likes: -1 } }
+      );
+
+      const postArrayUpdate = await postModel.updateOne(
+        { _id: postId },
+        { $pull: { likedby: email } }
+      );
+    }
 
     return Response.json({
-      Message: "Liked",
+      Message: "Modified",
       Status: true,
     });
   } catch (err) {

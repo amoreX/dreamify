@@ -1,6 +1,6 @@
 "use client";
 
-import {LikePost,isLiked} from "./Utils/LikePost";
+import {LikePost,updatedPost} from "./Utils/LikePost";
 import { motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
@@ -10,6 +10,7 @@ export default function DreamsThread() {
   const { data: session } = useSession();
   const [dreams, setDreams] = useState(null);
   const [geminiPrompt, setGeminiPrompt] = useState(null);
+  const [likecount,setLikecount]=useState(null);
   
 
   useEffect(() => {
@@ -22,6 +23,12 @@ export default function DreamsThread() {
     };
     gettingDreams();
   }, []);
+
+  const handleLike=async(dreamId)=>{
+    await LikePost(dreamId,session?.user?.email);
+    let update=await updatedPost(dreamId,session?.user?.email);
+    console.log(update);
+  };
 
   return (
     <div
@@ -40,7 +47,7 @@ export default function DreamsThread() {
                 className="w-1/2 h-fit relative bg-indigo-600 box-border p-3 rounded-md flex flex-col justify-center items-center"
               >
                 <span> {dream.post}</span>
-                <div className="bg-slate-50 text-black cursor-pointer" onClick={()=>LikePost(dream._id,session?.user?.email)}>Likes : {}</div>
+                <div className="bg-slate-50 text-black cursor-pointer" onClick={()=>handleLike(dream._id)}>Likes : {dream.likes}</div>
                 <div id="username" className="absolute bottom-0 right-0 bg-black">
                   {dream.username}
                 </div>

@@ -11,9 +11,11 @@ export const LikePost=async(dreamId,email)=>{
 };
 
 
-export const isLiked=async(dreamId,email)=>{
-    
-    //check if post is liked by user or not 
-    //supposed to run this function every time LikePost function is called as well
-     
+export const updatedPost=async(dreamId,email)=>{
+    const res = await axios.post("/api/isLiked",{
+        email:email,
+        postId:dreamId,
+    });
+    // console.log(res);
+    return res.data;
 };

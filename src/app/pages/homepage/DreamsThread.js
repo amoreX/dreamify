@@ -1,6 +1,6 @@
 "use client";
 
-import {LikePost} from "./Utils/LikePost";
+import {LikePost,isLiked} from "./Utils/LikePost";
 import { motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";

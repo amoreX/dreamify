@@ -9,8 +9,16 @@ import { useSession } from "next-auth/react";
 export default function DreamsThread() {
 	const { data: session } = useSession();
 	const [dreams, setDreams] = useState(null);
-	const [geminiPrompt, setGeminiPrompt] = useState(null);
-	const [likecount, setLikecount] = useState(null);
+	const refs = useRef({});
+
+	const setRef = (id, ele) => {
+		if (ele) {
+			refs.current[id] = {
+				container: ele,
+				likes: ele.querySelector("#likes"),
+			};
+		}
+	};
 
 	useEffect(() => {
 		const gettingDreams = async () => {
@@ -26,6 +34,10 @@ export default function DreamsThread() {
 	const handleLike = async (dreamId) => {
 		await LikePost(dreamId, session?.user?.email);
 		let update = await updatedPost(dreamId, session?.user?.email);
+
+		if (refs.current[dreamId]?.likes) {
+			refs.current[dreamId].likes.textContent = `Likes:${update.Likes}`;
+		}
 		console.log(update);
 	};
 
@@ -42,13 +54,15 @@ export default function DreamsThread() {
 						return (
 							<div
 								id="each-dream-container"
-								key={ind}
+								key={dream._id}
+								ref={(el) => setRef(dream._id, el)}
 								className="w-1/2 h-fit relative bg-indigo-600 box-border p-3 rounded-md flex flex-col justify-center items-center"
 							>
 								<span> {dream.post}</span>
 								<div
 									className="bg-slate-50 text-black cursor-pointer"
 									onClick={() => handleLike(dream._id)}
+									id="likes"
 								>
 									Likes : {dream.likes}
 								</div>

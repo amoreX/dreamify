@@ -2,7 +2,7 @@
 
 import { LikePost, updatedPost } from "./Utils/LikePost";
 import { motion } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 
@@ -20,16 +20,33 @@ export default function DreamsThread() {
 		}
 	};
 
+	const checkLiked = useCallback(
+		async (dreamId) => {
+			const res = await updatedPost(dreamId, session?.user?.email);
+			return res.Message;
+		},
+		[session?.user?.email]
+	);
+
 	useEffect(() => {
 		const gettingDreams = async () => {
 			const data = await axios.get("/api/getAll");
-			console.log("Heres all the dreams!");
-			//   console.log(data.data.allDreams);
-			console.log(data.data.allDreams);
+			// console.log("Heres all the dreams!");
+			// console.log(data.data.allDreams);
+
+			// Check liked status for each dream after setting dreams
+			if (data.data.allDreams && session?.user?.email) {
+				data.data.allDreams.forEach(async (dream) => {
+					const isLiked = await checkLiked(dream._id);
+					if (refs.current[dream._id]?.likes) {
+						refs.current[dream._id].likes.style.backgroundColor = isLiked ? "red" : "white";
+					}
+				});
+			}
 			setDreams(data.data.allDreams);
 		};
 		gettingDreams();
-	}, []);
+	}, [session?.user?.email, checkLiked]);
 
 	const handleLike = async (dreamId) => {
 		await LikePost(dreamId, session?.user?.email);
@@ -37,6 +54,11 @@ export default function DreamsThread() {
 
 		if (refs.current[dreamId]?.likes) {
 			refs.current[dreamId].likes.textContent = `Likes:${update.Likes}`;
+		}
+		if (update?.Message == true) {
+			refs.current[dreamId].likes.style.backgroundColor = "red";
+		} else {
+			refs.current[dreamId].likes.style.backgroundColor = "white";
 		}
 		console.log(update);
 	};
@@ -60,7 +82,7 @@ export default function DreamsThread() {
 							>
 								<span> {dream.post}</span>
 								<div
-									className="bg-slate-50 text-black cursor-pointer"
+									className="text-black cursor-pointer"
 									onClick={() => handleLike(dream._id)}
 									id="likes"
 								>
